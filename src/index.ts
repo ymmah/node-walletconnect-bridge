@@ -6,7 +6,12 @@ import pubsub from './pubsub'
 import { setNotification } from './notification'
 import pkg from '../package.json'
 
-const app = fastify({ logger: config.debug })
+const app = fastify({
+  logger: {
+    level: process.env.LOG_LEVEL || 'info',
+    file: process.env.LOG_FILE || undefined,
+  }
+})
 
 app.register(Helmet)
 
