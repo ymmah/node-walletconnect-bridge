@@ -2,7 +2,14 @@
 
 Bridge Server for relaying WalletConnect connections
 
-## Development
+## Environment Variables
+
+The following environment variables should be set for the container:
+
+* `LOG_FILE` - Log file path, does not log to file by default.
+* `LOG_LEVEL` - Log level for console and file, default: `info`. Supports `fatal`, `error`, `warn`, `info`, `debug`, `trace` or `silent`.
+
+## Develop
 
 ```bash
 yarn dev
