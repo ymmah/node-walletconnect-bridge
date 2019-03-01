@@ -25,7 +25,14 @@ yarn dev
 yarn build
 ```
 
-2. Production
+## Build Docker
+
+```bash
+yarn
+make build-docker
+```
+
+## Run
 
 ```bash
 yarn start
