@@ -6,6 +6,10 @@ import pubsub from './pubsub'
 import { setNotification } from './notification'
 import pkg from '../package.json'
 
+const CLIENT_PING_INTERVAL = 30 * 1000
+
+const noop = () => {}
+
 const app = fastify({
   logger: {
     level: process.env.LOG_LEVEL || 'info',
@@ -61,14 +65,31 @@ app.post('/subscribe', (req, res) => {
 })
 
 const wsServer = new WebSocket.Server({ server: app.server })
+const aliveSockets = new Map<WebSocket, boolean>()
 
 app.ready(() => {
   wsServer.on('connection', (socket: WebSocket) => {
+    aliveSockets.set(socket, true)
+    socket.on('pong', () => {
+      aliveSockets.set(socket, true)
+    })
     socket.on('message', async data => {
       pubsub(socket, data)
     })
   })
 })
+
+// client ping loop
+setInterval(function ping () {
+  app.log.debug(`Pinging client sockets (${aliveSockets.entries.length} alive)`)
+  wsServer.clients.forEach(socket => {
+    if (!aliveSockets.has(socket)) {
+      return socket.terminate()
+    }
+    aliveSockets.delete(socket)
+    socket.ping(noop)
+  })
+}, CLIENT_PING_INTERVAL)
 
 const [host, port] = config.host.split(':')
 app.listen(+port, host, (err, address) => {

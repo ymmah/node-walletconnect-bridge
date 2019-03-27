@@ -78,7 +78,7 @@ export default (socket: WebSocket, data: WebSocket.Data) => {
             break
         }
       } catch (e) {
-        console.error(e)
+        console.error('incoming message parse error:', message, e)
       }
     }
   }
