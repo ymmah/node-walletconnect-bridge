@@ -32,7 +32,7 @@ yarn
 make build-docker
 ```
 
-## Run
+## Run
 
 ```bash
 yarn start
@@ -45,7 +45,7 @@ $ curl http://localhost:5000/hello
 > Hello World, this is WalletConnect v1.0.0-beta
 ```
 
-### Using Docker
+## Using Docker
 
 1. Build the container with:
 
