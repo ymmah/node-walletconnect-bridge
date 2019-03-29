@@ -12,8 +12,14 @@ const noop = () => {}
 
 const app = fastify({
   logger: {
+    prettyPrint: {
+      colorize: false,
+      levelFirst: true,
+      translateTime: true
+    },
+    prettifier: require('pino-pretty'),
     level: process.env.LOG_LEVEL || 'info',
-    file: process.env.LOG_FILE || undefined,
+    file: process.env.LOG_FILE || undefined
   }
 })
 
@@ -94,6 +100,5 @@ setInterval(function ping () {
 const [host, port] = config.host.split(':')
 app.listen(+port, host, (err, address) => {
   if (err) throw err
-  console.log(`Server listening on ${address}`)
   app.log.info(`Server listening on ${address}`)
 })
