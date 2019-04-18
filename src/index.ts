@@ -1,9 +1,13 @@
+import { inspect } from 'util'
+import { IncomingMessage, OutgoingMessage } from 'http'
+
 import fastify from 'fastify'
 import Helmet from 'fastify-helmet'
 import WebSocket from 'ws'
 import config from './config'
 import pubsub, { cleanUpSub, cleanUpPub } from './pubsub'
 import { setNotification } from './notification'
+
 import pkg from '../package.json'
 
 const CLIENT_PING_INTERVAL = 30 * 1000
@@ -12,12 +16,17 @@ const noop = () => {}
 
 const app = fastify({
   logger: {
+    serializers: {
+      req: (req: IncomingMessage) => req.url,
+      res: (res: OutgoingMessage) => inspect(res)
+    },
     prettyPrint: {
+      crlf: false,
       colorize: false,
       levelFirst: true,
       translateTime: true
     },
-    prettifier: require('pino-pretty'),
+    prettifier: require('../lib/pretty'),
     level: process.env.LOG_LEVEL || 'info',
     file: process.env.LOG_FILE || undefined
   }

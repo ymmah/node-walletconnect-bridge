@@ -16,7 +16,7 @@
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "core-js": "^2.6.5",
-    "fastify": "^2.1.0",
+    "fastify": "^2.3.0",
     "fastify-helmet": "^3.0.0",
     "pino-pretty": "^2.5.0",
     "ws": "^6.1.2"
